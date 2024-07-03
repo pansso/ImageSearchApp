@@ -43,6 +43,16 @@ object Dep {
         )
     }
 
+    object Paging{
+        private const val pagingVersion = "3.3.0"
+
+        val PagingList = listOf(
+            "androidx.paging:paging-runtime:$pagingVersion",
+            "androidx.paging:paging-compose:$pagingVersion"
+        )
+
+    }
+
     object Glide {
 
     }
@@ -88,6 +98,7 @@ object Dep {
     }
 
     const val timber = "com.jakewharton.timber:timber:5.0.1"
+
     object Room {
         private const val roomVersion = "2.5.0"
 

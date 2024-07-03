@@ -13,8 +13,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:model"))
+
     implementation(Dep.Kotlin.serializationJson)
     Dep.Retrofit.RetrofitList.forEach(::implementation)
+    Dep.Paging.PagingList.forEach(::implementation)
     implementation(Dep.Hilt.hilt)
     kapt(Dep.Hilt.compiler)
     kapt(Dep.Room.compiler)
