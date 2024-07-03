@@ -15,4 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "LezhinTestApp"
 include(":app")
- 
+include(":core:domain")
+include(":core:data")
+include(":feature:search")
+include(":feature:bookmark")
+include(":core:model")

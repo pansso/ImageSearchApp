@@ -1,0 +1,30 @@
+import com.example.lezhintestapp.Dep
+import com.example.lezhintestapp.Versions
+
+def hasLibraryPlugin = pluginManager.hasPlugin("com.android.library")
+def hasApplicationPlugin = pluginManager.hasPlugin("com.android.application")
+
+if (hasApplicationPlugin || hasLibraryPlugin) {
+    android {
+        compileSdk = Versions.targetSdk
+
+        defaultConfig {
+            minSdk = Versions.minSdk
+            targetSdk = Versions.targetSdk
+            versionCode = 1
+            versionName = "0.0.0"
+        }
+
+        compileOptions {
+            sourceCompatibility = Versions.javaVersion
+            targetCompatibility = Versions.javaVersion
+        }
+        kotlinOptions {
+            jvmTarget = Versions.javaVersion.toString()
+        }
+
+        dependencies {
+            implementation(Dep.timber)
+        }
+    }
+}
