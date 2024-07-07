@@ -17,6 +17,7 @@ object Dep {
         "androidx.core:core-ktx:1.10.1",
         "androidx.appcompat:appcompat:1.6.1",
         "androidx.activity:activity-ktx:1.7.2",
+        "com.google.android.material:material:1.6.1"
     )
 
     object LifeCycle {
@@ -71,16 +72,16 @@ object Dep {
 
     object Compose {
 
-        val bom = "androidx.compose:compose-bom:2023.03.00"
         val ComposeList = listOf(
-            "androidx.compose.ui:ui",
-            "androidx.compose.ui:ui-tooling",
-            "androidx.navigation:navigation-compose",
-            "androidx.hilt:hilt-navigation-compose",
-            "androidx.compose.material3:material3-android",
-            "androidx.activity:activity-compose",
-            "androidx.lifecycle:lifecycle-runtime-compose",
-            "androidx.lifecycle:lifecycle-viewmodel-compose",
+            "androidx.compose.ui:ui:1.5.0",
+            "androidx.compose.ui:ui-tooling:1.5.0",
+            "androidx.navigation:navigation-compose:2.7.0",
+            "androidx.hilt:hilt-navigation-compose:1.0.0",
+            "androidx.compose.material3:material3-android:1.2.0-alpha05",
+            "androidx.activity:activity-compose:1.7.2",
+            "androidx.lifecycle:lifecycle-runtime-compose:2.6.1",
+            "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1",
+            "androidx.compose.runtime:runtime-livedata:1.5.0",
         )
 
     }

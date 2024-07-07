@@ -7,5 +7,5 @@ object Versions {
     const val targetSdk = 34
     const val compileSdk = 34
 
-    val javaVersion = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_17
 }

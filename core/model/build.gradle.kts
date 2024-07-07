@@ -4,6 +4,6 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = com.example.lezhintestapp.Versions.javaVersion
+    targetCompatibility = com.example.lezhintestapp.Versions.javaVersion
 }

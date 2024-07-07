@@ -39,7 +39,7 @@ android {
         targetCompatibility = Versions.javaVersion
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = Versions.javaVersion.toString()
     }
     buildFeatures {
         compose = true
@@ -55,12 +55,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-    implementation(project(":core:data"))
-    Dep.androidList.forEach(::implementation)
-    Dep.LifeCycle.LifeCycleList.forEach(::implementation)
+    implementation(project(":feature:main"))
 
-    implementation(platform(Dep.Compose.bom))
     Dep.Compose.ComposeList.forEach(::implementation)
 
     implementation(Dep.Hilt.hilt)
