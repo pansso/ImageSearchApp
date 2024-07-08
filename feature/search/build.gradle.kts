@@ -1,3 +1,5 @@
+import com.example.lezhintestapp.Dep
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -9,7 +11,6 @@ android {
     namespace = "com.example.search"
 
     buildFeatures {
-        dataBinding = true
         compose = true
     }
 
@@ -19,14 +20,18 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
+    implementation(project(":core:common"))
 
-    com.example.lezhintestapp.Dep.androidList.forEach(::implementation)
-    com.example.lezhintestapp.Dep.LifeCycle.LifeCycleList.forEach(::implementation)
+    Dep.androidList.forEach(::implementation)
+    Dep.LifeCycle.LifeCycleList.forEach(::implementation)
 
-//    implementation(platform(com.example.lezhintestapp.Dep.Compose.bom))
-    com.example.lezhintestapp.Dep.Compose.ComposeList.forEach(::implementation)
+    Dep.Compose.ComposeList.forEach(::implementation)
+    Dep.Paging.PagingList.forEach(::implementation)
+    implementation(Dep.Glide.glide)
 
-    implementation(com.example.lezhintestapp.Dep.Hilt.hilt)
-    kapt(com.example.lezhintestapp.Dep.Hilt.compiler)
+    implementation(Dep.Hilt.hilt)
+    kapt(Dep.Hilt.compiler)
     testImplementation("junit:junit:4.13.2")
 }

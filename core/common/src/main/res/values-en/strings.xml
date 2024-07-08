@@ -1,4 +1,6 @@
 <resources>
     <string name="search">search</string>
     <string name="bookmark">bookmark</string>
+    <string name="errorMsg">Failed to load search results. Please try again.</string>
+    <string name="errorNoResult">No search results found. Please try a different search term.</string>
 </resources>

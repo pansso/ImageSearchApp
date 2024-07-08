@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
+import com.example.search.SearchScreen
 
 internal class AppNavigator(
     private val navController: NavHostController
@@ -21,7 +22,7 @@ internal class AppNavigator(
             composable(
                 route = ScreenRoute.SEARCH.route
             ) {
-
+                SearchScreen(paddingValues)
             }
 
             composable(
@@ -42,8 +43,8 @@ internal class AppNavigator(
         }
 
         when (tab) {
-            BottomTab.SearchTab -> navController.navigate(ScreenRoute.SEARCH.route)
-            BottomTab.BookmarkTab -> navController.navigate(ScreenRoute.BOOKMARK.route)
+            BottomTab.SearchTab -> navController.navigate(ScreenRoute.SEARCH.route,navOptions)
+            BottomTab.BookmarkTab -> navController.navigate(ScreenRoute.BOOKMARK.route,navOptions)
         }
     }
 

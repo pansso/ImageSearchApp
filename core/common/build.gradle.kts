@@ -21,7 +21,6 @@ android {
 
 
 dependencies {
-
     Dep.androidList.forEach(::implementation)
     Dep.LifeCycle.LifeCycleList.forEach(::implementation)
 

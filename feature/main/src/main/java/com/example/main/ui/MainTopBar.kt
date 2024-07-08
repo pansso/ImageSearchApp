@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainTopbar(title:String) {
-    TopAppBar(title = {
-        Text(text = title )
-    },
-        colors = TopAppBarDefaults.topAppBarColors())
+fun MainTopBar(title: String) {
+    TopAppBar(
+        title = {
+            Text(text = title)
+        },
+        colors = TopAppBarDefaults.topAppBarColors()
+    )
 }

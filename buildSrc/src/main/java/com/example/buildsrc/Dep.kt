@@ -55,7 +55,7 @@ object Dep {
     }
 
     object Glide {
-
+        val glide = "com.github.skydoves:landscapist-glide:1.4.7"
     }
 
     object Retrofit {

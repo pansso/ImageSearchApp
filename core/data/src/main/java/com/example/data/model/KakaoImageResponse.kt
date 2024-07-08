@@ -18,15 +18,15 @@ data class KakaoImageResponse(
         @SerialName("datetime")
         val datetime: String?,
         @SerialName("display_sitename")
-        val displaySitename: String?,
+        val display_sitename: String?,
         @SerialName("doc_url")
-        val docUrl: String?,
+        val doc_url: String?,
         @SerialName("height")
         val height: Int?,
         @SerialName("image_url")
-        val imageUrl: String?,
+        val image_url: String?,
         @SerialName("thumbnail_url")
-        val thumbnailUrl: String?,
+        val thumbnail_url: String?,
         @SerialName("width")
         val width: Int?
     )
@@ -34,10 +34,10 @@ data class KakaoImageResponse(
     @Serializable
     data class Meta(
         @SerialName("is_end")
-        val isEnd: Boolean?,
+        val is_end: Boolean?,
         @SerialName("pageable_count")
-        val pageableCount: Int?,
+        val pageable_count: Int?,
         @SerialName("total_count")
-        val totalCount: Int?
+        val total_count: Int?
     )
 }

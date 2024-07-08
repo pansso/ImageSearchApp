@@ -26,7 +26,7 @@ fun MainScreen(
 
     Scaffold(
         topBar = {
-                 MainTopbar(title = currentTabTitle )
+                 MainTopBar(title = currentTabTitle )
         },
         content = { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {

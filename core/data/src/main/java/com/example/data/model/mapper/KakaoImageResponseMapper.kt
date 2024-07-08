@@ -5,14 +5,14 @@ import com.example.model.ImageData
 import com.example.model.KakaoImageData
 
 
-internal fun KakaoImageResponse.Document.toData() : ImageData =
+internal fun KakaoImageResponse.Document.toData(): ImageData =
     ImageData(
         collection = collection,
-        thumbnailUrl = thumbnailUrl,
-        imageUrl = imageUrl,
-        width =  width,
+        thumbnailUrl = thumbnail_url,
+        imageUrl = image_url,
+        width = width,
         height = height,
-        displaySitename = displaySitename,
-        docUrl = docUrl,
+        displaySitename = display_sitename,
+        docUrl = doc_url,
         datetime = datetime
     )

@@ -20,8 +20,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
     implementation(project(":core:common"))
 
     implementation(project(":feature:search"))
