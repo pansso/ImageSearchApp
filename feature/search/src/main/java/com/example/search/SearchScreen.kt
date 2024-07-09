@@ -3,8 +3,8 @@ package com.example.search
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,13 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,165 +30,150 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.common.ui.ErrorScreen
+import com.example.common.ui.BaseTextScreen
 import com.example.common.ui.LoadingScreen
 import com.example.model.ImageData
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 
+val LARGE_DISPLAY_WIDTH = 600
 @Composable
 fun SearchScreen(
-    paddingValues: PaddingValues,
+    searchText: StateFlow<String>,
     viewModel: SearchViewModel = hiltViewModel()
 ) {
-
-    val searchText by viewModel.searchText.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.debounceSearchText(searchText)
+        viewModel.getAllBookmarks()
+    }
     val uiState by viewModel.uiState.collectAsState()
     val searchResult = viewModel.searchResult.collectAsLazyPagingItems()
-
+    val bookmarkList by viewModel.bookmarkList.collectAsState()
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
-            .padding(paddingValues)
             .fillMaxSize()
-            .background(color = Color.White)
     ) {
-        SearchField(
-            searchText = searchText,
-            onSearchTextChanged = { viewModel.updateSearchText(it) },
-            onTextClear = { viewModel.clearSearchText() })
-
         when (uiState) {
-            is SearchUiState.Loading -> {
-                LoadingScreen()
-            }
-
+            is SearchUiState.Loading -> LoadingScreen()
+            is SearchUiState.Error -> BaseTextScreen(stringResource(id = com.example.common.R.string.errorMsg))
+            is SearchUiState.Default -> BaseTextScreen(msg = stringResource(id = com.example.common.R.string.noSearchResultFound))
             is SearchUiState.Success -> {
-                if (searchResult.itemCount == 0 && searchResult.loadState.refresh is LoadState.NotLoading) {
-                    val errorMsg = stringResource(id = com.example.common.R.string.errorNoResult)
-                    LaunchedEffect(key1 = Unit) {
-                        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                when (searchResult.loadState.refresh) {
+                    is LoadState.Error -> BaseTextScreen(stringResource(id = com.example.common.R.string.errorMsg))
+                    is LoadState.Loading -> LoadingScreen()
+                    else -> {
+                        if (searchResult.itemCount == 0 && searchResult.loadState.refresh is LoadState.NotLoading) {
+                            //불러올수 있는 아이템이 없음
+                            LaunchedEffect(Unit) {
+                                Toast.makeText(context, com.example.common.R.string.errorNoResult, Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            //성공부분
+                            ImageList(
+                                searchResult = searchResult,
+                                bookmarkList = bookmarkList,
+                                onBookmarkToggle = {
+                                    viewModel.toggledBookmark(
+                                        it,
+                                        searchText.value
+                                    )
+                                })
+                        }
                     }
-                } else {
-                    ImageList(searchResult)
                 }
-
             }
 
-            is SearchUiState.Error -> {
-                Timber.d("sjh error")
-                LaunchedEffect(key1 = Unit) {
-                    Toast.makeText(context, (uiState as SearchUiState.Error).e?.localizedMessage, Toast.LENGTH_SHORT).show()
-                }
-                ErrorScreen(stringResource(id = com.example.common.R.string.errorMsg))
-            }
-
-            is SearchUiState.Default -> {
-            }
         }
     }
 }
 
+
 @Composable
-private fun SearchField(
-    searchText: String,
-    onSearchTextChanged: (String) -> Unit,
-    onTextClear: () -> Unit
+private fun ImageList(
+    searchResult: LazyPagingItems<ImageData>,
+    bookmarkList: List<String>,
+    onBookmarkToggle: (String) -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    Row(modifier = Modifier.fillMaxWidth()) {
-        TextField(
-            value = searchText,
-            onValueChange = onSearchTextChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .focusRequester(focusRequester),
-            singleLine = true,
-            placeholder = { Text("이미지 키워드 검색") },
-            trailingIcon = {
-                if (searchText.isNotEmpty()) {
-                    IconButton(onClick = { onTextClear() }) {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = "clear button"
-                        )
-                    }
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val gridListState = rememberSaveable(saver = LazyGridState.Saver) { LazyGridState() }
+        val screenWidth = maxWidth
+        if (screenWidth> LARGE_DISPLAY_WIDTH.dp){
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                state = gridListState
+            ) {
+                items(searchResult.itemCount) { index ->
+                    SearchItem(searchResult[index], bookmarkList, onBookmarkToggle)
                 }
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Search
-            ),
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    keyboardController?.hide()
-                    focusManager.clearFocus()
+            }
+        } else{
+            val listState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState
+            ) {
+                items(
+                    count = searchResult.itemCount
+                ) {
+                    SearchItem(searchResult[it], bookmarkList, onBookmarkToggle)
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
-            )
-        )
-    }
-}
-
-@Composable
-private fun ImageList(searchResult: LazyPagingItems<ImageData>) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(
-            count = searchResult.itemCount
-        ) {
-            SearchItem(searchResult[it])
-            Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
+
 }
 
 @Composable
-private fun SearchItem(item: ImageData?) {
-    var isBookmarked by remember { mutableStateOf(false) }
-
-    val requestOptions = RequestOptions()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .encodeQuality(80)
-        .format(DecodeFormat.PREFER_RGB_565)
-        .centerInside()
+private fun SearchItem(
+    item: ImageData?,
+    bookmarkList: List<String>,
+    onBookmarkToggle: (String) -> Unit,
+    padding: Dp = 8.dp
+) {
+//    val isBookmark = item?.imageUrl in bookmarkList
+    val isBookmark by remember(
+        item?.imageUrl,
+        bookmarkList
+    ) { derivedStateOf { item?.imageUrl in bookmarkList } }
+    val requestOptions = remember {
+        RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .encodeQuality(80)
+            .format(DecodeFormat.PREFER_RGB_565)
+            .centerInside()
+    }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
+            .padding(padding)
     ) {
         GlideImage(
             imageModel = item?.imageUrl,
@@ -198,7 +185,7 @@ private fun SearchItem(item: ImageData?) {
             error = painterResource(id = com.example.common.R.drawable.baseline_error_outline_24)
         )
         IconButton(
-            onClick = { isBookmarked = !isBookmarked },
+            onClick = { item?.imageUrl?.let { onBookmarkToggle(it) } },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(8.dp)
@@ -207,8 +194,8 @@ private fun SearchItem(item: ImageData?) {
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = "clear button",
-                tint = if (!isBookmarked) Color.White else Color.Yellow
+                contentDescription = "bookmark button",
+                tint = if (isBookmark) Color.Yellow else Color.White
             )
         }
     }

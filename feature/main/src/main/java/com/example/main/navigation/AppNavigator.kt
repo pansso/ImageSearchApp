@@ -1,34 +1,31 @@
 package com.example.main.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
+import com.example.bookmark.BookmarkScreen
 import com.example.search.SearchScreen
+import kotlinx.coroutines.flow.StateFlow
 
 internal class AppNavigator(
     private val navController: NavHostController
 ) {
     @Composable
-    fun AppNavigation(
-        paddingValues: PaddingValues
-    ) {
+    fun AppNavigation(searchText: StateFlow<String>) {
         NavHost(navController = navController, startDestination = ScreenRoute.SEARCH.route) {
             composable(
                 route = ScreenRoute.SEARCH.route
             ) {
-                SearchScreen(paddingValues)
+                SearchScreen(searchText)
             }
 
             composable(
                 route = ScreenRoute.BOOKMARK.route
             ) {
-
+                BookmarkScreen(searchText)
             }
         }
     }

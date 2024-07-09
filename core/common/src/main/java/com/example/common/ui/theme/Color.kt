@@ -13,11 +13,14 @@ object AppColor {
     val PurpleGrey40 = Color(0xFF625b71)
     val Pink40 = Color(0xFF7D5260)
 
+    val White = Color(0xFFFFFFFF)
+    val LightGray = Color(0xFF121212)
     val LightBlue200 = Color(0xFF81D4FA)
     val LightBlue700 = Color(0xFF0288D1)
     val BlueGrey200 = Color(0xFFB0BEC5)
     val BlueGrey600 = Color(0xFF546E7A)
 
+    @Composable fun BottomBarColor() = if (isSystemInDarkTheme()) LightGray else White
     @Composable fun selectedColor() = if (isSystemInDarkTheme()) AppColor.LightBlue200 else AppColor.LightBlue700
     @Composable fun unselectedColor() = if (isSystemInDarkTheme()) AppColor.BlueGrey200 else AppColor.BlueGrey600
 }

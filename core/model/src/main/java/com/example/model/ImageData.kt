@@ -8,5 +8,6 @@ data class ImageData(
     val height: Int?,
     val imageUrl: String?,
     val thumbnailUrl: String?,
-    val width: Int?
+    val width: Int?,
+    var isBookmarked: Boolean = false
 )

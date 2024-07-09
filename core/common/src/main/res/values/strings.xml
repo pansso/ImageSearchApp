@@ -1,6 +1,10 @@
 <resources>
     <string name="search">검색</string>
-    <string name="bookmark">즐겨찾기</string>
+    <string name="bookmark">북마크</string>
     <string name="errorMsg">검색 결과를 불러오지 못했습니다. 다시 시도해주세요.</string>
     <string name="errorNoResult">"검색 결과가 없습니다. 다른 검색어를 입력해주세요"</string>
+    <string name="needSearchKeyword">"검색어를 입력해 주세요."</string>
+    <string name="noSearchResultFound">"검색 결과가 없습니다."</string>
+    <string name="checkCount">%d 개 선택됨</string>
+    <string name="remove">삭제하기</string>
 </resources>

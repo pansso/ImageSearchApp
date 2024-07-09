@@ -1,5 +1,7 @@
 package com.example.data.datasource
 
+import com.example.data.repository.BookmarkRepository
+import com.example.data.repository.BookmarkRepositoryImpl
 import com.example.data.repository.KakaoImageSearchRepository
 import com.example.data.repository.KakaoImageSearchRepositoryImpl
 import dagger.Binds
@@ -15,4 +17,9 @@ internal abstract class DataModule {
     abstract fun bindsKakaoImageSearchRepository(
         repositoryImpl: KakaoImageSearchRepositoryImpl
     ) : KakaoImageSearchRepository
+
+    @Binds
+    abstract fun bindBookmarkRepository(
+        repositoryImpl: BookmarkRepositoryImpl
+    ) : BookmarkRepository
 }

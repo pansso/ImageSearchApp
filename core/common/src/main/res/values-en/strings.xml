@@ -3,4 +3,8 @@
     <string name="bookmark">bookmark</string>
     <string name="errorMsg">Failed to load search results. Please try again.</string>
     <string name="errorNoResult">No search results found. Please try a different search term.</string>
+    <string name="needSearchKeyword">"Please enter a search keyword.."</string>
+    <string name="noSearchResultFound">"No search results found."</string>
+    <string name="checkCount">Selected %d items</string>
+    <string name="remove">Remove</string>
 </resources>

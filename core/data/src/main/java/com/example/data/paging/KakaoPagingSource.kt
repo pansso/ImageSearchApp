@@ -37,8 +37,9 @@ class KakaoPagingSource(
                 nextKey = (currentPage + 1).takeIf { documents.isNotEmpty() }
             )
         } catch (e: Exception) {
+            Timber.d("sjh load exception ${e.localizedMessage}")
             LoadResult.Error(e)
-//            Timber.e( "sjh PagingSource: Error loading data ${e.localizedMessage}")
+
         }
     }
 }
