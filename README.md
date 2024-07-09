@@ -3,6 +3,7 @@
 <img src=https://github.com/pansso/LezhinTestApp/assets/65775701/9ff5373b-782d-42e0-9135-03bfb0dd9909 width="200">
 <img src=https://github.com/pansso/LezhinTestApp/assets/65775701/6c976839-ff6b-4aeb-90eb-f49a6cf38dcc width="200">
 <img src=https://github.com/pansso/LezhinTestApp/assets/65775701/e8dfe224-cc86-4e18-8abb-67f86858c5b2 width="200">
+
 ## 목차
 
 1. [질의 답변 사항](#질의-답변-사항)
