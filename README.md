@@ -6,38 +6,13 @@
 
 ## 목차
 
-1. [질의 답변 사항](#질의-답변-사항)
-2. [소개](#소개)
-3. [프로젝트 구성](#프로젝트-구성)
-4. [라이브러리](#라이브러리)
-5. [기능](#기능)
-6. [미흡한 기능](#미흡한-기능)
-7. [기타](#기타)
+1. [소개](#소개)
+2. [프로젝트 구성](#프로젝트-구성)
+3. [라이브러리](#라이브러리)
+4. [기능](#기능)
+5. [미흡한 기능](#미흡한-기능)
+6. [기타](#기타)
 
-## 질의 답변 사항
-1. Kotlin Coroutine Flow 관련
-   - ColdFlow와 HotFlow:
-       - ColdFlow : 각 수집자마다 새로운 flow 인스턴스가 생성됩니다. 수집이 시작될때만 데이터를 방출합니다. flow 블록들이 이러한 경우에 속하고, 일회성 이벤트등에 사용됩니다. 파일읽기, 네트워크 요청등 시간이 걸리는작업에 사용됩니다.
-       - HotFlow : 활성 수집자의 수와 관계없이 데이터를 지속적으로 방출합니다. 여러 수집자가 동일한 flow 인스턴스를 공유합니다. ```StateFlow```, ```SharedFlow```등이 hotFlow입니다.
-
-   - StateFlow와 SharedFlow에 대해
-       - StateFlow : 항상 상태값을 지니고 있으며 초기값이 필요합니다. 중복된 값을 무시하고 변경된 값이 들어올때만 동작합니다.(distinctUntilChanced) ui등의 상태관리에 주로 사용됩니다. 가장 최근의 값만 유지합니다.
-       - SharedFlow : 초기값이 없고 중복값을 사용할수있습니다. 여러 수집자가 동시에 구독할수있습니다. ```replay``` 파라미터를 사용해 새 구독자에게 이전 값을 전달할수 있습니다.
-    
-2. AndroidVieweModel 관련
-   - owner에 대해 자세히 설명해주세요 :
-       - Activity, fragment 가 owner로 사용되어 viewModel의 생명주기등을 관리합니다. owner의 생명주기에따라 viewModel의 생명주기가 결정됩니다.
-
-   - composeNavigation과 Dagger Hilt를 사용하는경우 hiltViewModel()로 ViewModel Instance를 가져올때 owner를 어떻게 설정해야 하는지 자세히 설명해주세요
-       - hiltViewModel()은 Hilt를 사용할때 Viewmodel을 주입받기 위한 Compose 함수이며 따로 owner의 설정이 필요없는걸로 알고있습니다.
-       - navigation을 사용할때 navBackstackEntry에서 owner를 설정하기도 합니다.
-    
-3. Paging3 관련
-   - PagingSource 와 getRefreshKey 함수의 파라미터와 리턴값에 대해 자세히 설명해주세요
-       - getRefreshKey는 새로고침시 어느 지점에서 연결되어 호출되냐를 정하는 함수입니다. param인 ```State: PagingState<Key, Value>```는 페이지의 키타입(int), value는 로드된 데이터의 타입입니다. return값으로는 새로고침시 사용할 키값을 리턴합니다. null이면 처음부터 데이터를 로드, key를 가질시 특정 위치부터 로드합니다.
-   
-   - PagingSource의 load 함수의 파라미터와 리턴값에 대해 자세히 설명해주세요
-       - param 은 ```LoadParams<Key>``` return 값은 ```LoadResult<Key,Value>``` 입니다. 파라미터는 로드할 아이템의 수, 리턴값은 성공할경우 ```LoadResult.Page``` 실패할경우 ```LoadResult.Error``` 가 반환됩니다.
 
 ## 소개
 Kakao 이미지 검색 api를 활용해 이미지를검색, 북마크, 필터링 할수있는 기능을 가진 앱입니다.<br>
