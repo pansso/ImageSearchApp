@@ -17,7 +17,6 @@
 ## 소개
 Kakao 이미지 검색 api를 활용해 이미지를검색, 북마크, 필터링 할수있는 기능을 가진 앱입니다.<br>
 구글 앱 아키텍처, mvvm, Jetpack Compose, Flow 등이 사용되었습니다.<br>
-현재 api키는 공개되어있지만 추후에 local.property등으로 옮겨 비공개로 전환할 예정입니다.<br>
 
 ## 프로젝트 구성
 - feature - core 구조의 멀티모듈 구조입니다.
