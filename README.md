@@ -1,4 +1,4 @@
-# LezhinTestApp
+# ImageSearchApp
 
 <img src=https://github.com/pansso/LezhinTestApp/assets/65775701/9ff5373b-782d-42e0-9135-03bfb0dd9909 width="200">
 <img src=https://github.com/pansso/LezhinTestApp/assets/65775701/6c976839-ff6b-4aeb-90eb-f49a6cf38dcc width="200">
